@@ -4,8 +4,8 @@ This is a **public testing snapshot**, not the CMR product, not a release, and n
 clinical system. It exists solely to run a bounded Linux verification of a
 byte-identical allowlisted dependency/test closure from the private CMR repository.
 
-- Source commit (merged main): `7877cca83e7a56c6349200b5406c7151b2830182`
-- Source tree: `0be52a71ad2ca6875186501f33ae1eeeef22b93c`
+- Source commit (merged main): `e44bbe01f259a2698e584d56ff3f4da3dbd38e43`
+- Source tree: `01d72a0a0fe372a93bcb3d4cdb739fef687b44a2`
 - Export manifest: `PUBLIC_MANIFEST.json` (maps every exported source/test/static file
   to its upstream path and SHA-256)
 - Manifest verifier: `ci/verify_manifest.py`
@@ -32,15 +32,22 @@ transport. The recent API file includes POSIX security witnesses (symlinked
 store/sidecar, `dir_fd`, `O_DIRECTORY | O_NOFOLLOW`, ancestor swaps) that are
 skipped on Windows and execute on `ubuntu-latest`.
 
-## Known residual boundary (not fixed, not waived)
+## Known residual boundary (narrowed, not unforgeable, not waived)
 
-The corrected sidecar replacement witness forces a genuinely different identity:
-it holds the original inode open and renames it outside the validated path before
-creating the replacement. It does **not** cover same-inode reuse. Production
-`_same_file` compares only `(st_dev, st_ino)`, so a same-path substitution that
-reuses the inode can still be accepted. That is a residual local same-user
-integrity limitation, not a remote/loopback bypass. This snapshot does not fix or
-waive it; a stronger content/version binding is a separate bounded scope decision.
+The merged source now compares `st_dev`, `st_ino` and `st_size`, plus
+`st_ctime_ns` on POSIX, when it decides whether two observations name the same
+file object, and it re-stats the open sidecar handle after the bounded read. A
+real same-path unlink/recreate that reuses the inode is therefore refused with
+`target_authority.symlink` instead of being ingested, and a content mutation
+during the read is treated as an unusable sidecar.
+
+This is a narrowing witness, **not** an unforgeable identity proof. Outside the
+guarantee remain: a same-inode replacement that reproduces both size and ctime,
+a privileged actor able to backdate ctime, and a mutation after the final
+observation. On Windows `st_ctime` is not a stable lstat/fstat observation, so
+it is not compared there; Windows keeps dev/inode/size plus its existing
+file-ID unlink/recreate witness. The residual is reported, not waived; a
+stronger content binding would be a separate bounded scope decision.
 
 ## Explicit non-claims
 

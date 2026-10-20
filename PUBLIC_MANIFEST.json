@@ -15,18 +15,18 @@
       "sha256": "7ab822d55301b579906c80e92466d9da8d60a0dabfb8736779585e0799106e6f"
     },
     {
-      "bytes": 4260,
+      "bytes": 4680,
       "kind": "ci-only",
       "note": "CI-only repository README; not upstream source",
       "path": "README.md",
-      "sha256": "55f3b0522541a2bf8a57c8e4f5f5c25c6d164b73fef52308a0f795f5a7e9e7e7"
+      "sha256": "0ea9262edfd447c9acf915f165b625eff144dc10a239ede667efa6d87bf76589"
     },
     {
-      "bytes": 1717,
+      "bytes": 2200,
       "kind": "ci-only",
       "note": "CI-only notice; no upstream LICENSE exists",
       "path": "NOTICE.md",
-      "sha256": "d9c305014d008a2927eabe429ada24f4ad01e065498a80c4342d30e640562ab8"
+      "sha256": "87f8e90609d40c02b5216b69303c88aee21a2f7890543f7004d0ff13d1d33cf7"
     },
     {
       "bytes": 3048,
@@ -489,10 +489,10 @@
       "source_sha256": "19c693dae12aaa7a07f9f8e01c996bc0f56e8cfe775cd93dfee4398e41f7b8b7"
     },
     {
-      "bytes": 105860,
+      "bytes": 107846,
       "public_path": "services/workstation/recent.py",
       "source_path": "services/workstation/recent.py",
-      "source_sha256": "3fb82a904b1459ac567e249e4e40dad6dc4ba6e35a99e7e06e82c0dabc66a72f"
+      "source_sha256": "6b41c6304cc7dae183282dfaf333426c26b7cf95f932f7d0a9e152bbfbebec49"
     },
     {
       "bytes": 31296,
@@ -579,10 +579,10 @@
       "source_sha256": "9983207811b40cb0d1a27c984abdb7837b04f397725f505fe98212e20cbc04d0"
     },
     {
-      "bytes": 442527,
+      "bytes": 448624,
       "public_path": "tests/workstation/test_case_workspace_recent_api.py",
       "source_path": "tests/workstation/test_case_workspace_recent_api.py",
-      "source_sha256": "6af5d1443bbf88e97e00b2d052c45f7792ab27490ba8da77ddcb32205f469903"
+      "source_sha256": "75bd5fcf81e877d9400bcd62dcbad8faf3f9cd2b675e3f5461797ca48ca25cc3"
     },
     {
       "bytes": 7778,
@@ -621,7 +621,7 @@
       "source_sha256": "da13c3a6728bb8a70514b127111ce7c68b62abf82c07d101cfc561520ad09d11"
     }
   ],
-  "generated_at_utc": "2026-10-20T10:58:21Z",
+  "generated_at_utc": "2026-10-20T20:02:58Z",
   "purpose": "Public Linux-focused CI verification snapshot; not a product or clinical release",
   "schema": "cmr-public-ci-snapshot-manifest/v1",
   "selection": {
@@ -630,7 +630,7 @@
       "desktop/Tauri/frontend/webapp and native visual evidence",
       "BAAI/ML/GPU/weights, real DICOM, patient data, reports/contracts/orchestration"
     ],
-    "rationale": "Focused recent-cases API plus required workstation neighbors from the merged tests-only portability correction; the recent API file carries POSIX symlink/dir_fd security witnesses for Linux execution. Same-inode reuse is explicitly documented as a residual boundary, not covered by the witness.",
+    "rationale": "Focused recent-cases API plus required workstation neighbors from the merged tests-only portability correction and the merged sidecar same-inode narrowing; the recent API file carries POSIX symlink/dir_fd security witnesses and the same-inode / post-read ctime witnesses for Linux execution. The remaining same-size same-ctime race is explicitly documented as a residual boundary.",
     "tests": [
       "tests/workstation/test_case_workspace_recent_api.py",
       "tests/workstation/test_case_workspace_open.py",
@@ -642,13 +642,13 @@
       "tests/workstation/test_frame_pixels_endpoint.py"
     ]
   },
-  "source_commit_time": "2026-10-20T17:56:15+07:00",
+  "source_commit_time": "2026-10-21T02:24:50+07:00",
   "source_repository": "private upstream CMR repository",
-  "source_sha": "7877cca83e7a56c6349200b5406c7151b2830182",
-  "source_tree": "0be52a71ad2ca6875186501f33ae1eeeef22b93c",
+  "source_sha": "e44bbe01f259a2698e584d56ff3f4da3dbd38e43",
+  "source_tree": "01d72a0a0fe372a93bcb3d4cdb739fef687b44a2",
   "totals": {
     "ci_only_files": 6,
-    "exported_bytes": 2629105,
+    "exported_bytes": 2637188,
     "exported_source_test_static_files": 96
   }
 }

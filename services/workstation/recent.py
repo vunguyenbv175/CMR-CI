@@ -881,13 +881,37 @@ def _read_sidecar_bytes(fd: int) -> bytes:
 
 
 def _same_file(a: os.stat_result, b: os.stat_result) -> bool:
-    """True when two filesystem observations name the same object.
+    """True when two observations are the same object at the same content version.
 
-    Identity (``st_dev``/``st_ino``), not size or mtime: a parent directory
-    swapped for a junction or for another directory resolves to a different
-    object, which is exactly the redirection this module must refuse.
+    ``(st_dev, st_ino)`` is the object identity; ``st_size`` is added on all
+    platforms. On POSIX the observations must also agree on ``st_ctime_ns``:
+    ctime is the kernel-maintained metadata-change witness and catches the
+    observed same-inode unlink/recreate even when the replacement has the same
+    byte length. On Windows ``st_ctime`` is not a stable lstat/fstat
+    observation (it can drift between the two calls) and is therefore not
+    compared; Windows keeps dev/inode/size plus its existing file-ID
+    unlink/recreate witness.
+
+    Exact guarantee, not a proof of unforgeable identity: POSIX both
+    observations must agree on dev, inode, size and ctime. A same-inode
+    replacement that reproduces all four, a privileged actor able to backdate
+    ctime, and a mutation after the final observation remain outside this
+    guarantee. This is deliberately not an mtime check: mtime is
+    user-settable. The remaining TOCTOU is reported, never waived.
     """
-    return (a.st_dev, a.st_ino) == (b.st_dev, b.st_ino)
+    if (
+        a.st_dev,
+        a.st_ino,
+        a.st_size,
+    ) != (
+        b.st_dev,
+        b.st_ino,
+        b.st_size,
+    ):
+        return False
+    if os.name == "nt":
+        return True
+    return a.st_ctime_ns == b.st_ctime_ns
 
 
 def _open_sidecar(seq_path: Path, flags: int) -> int:
@@ -1008,6 +1032,14 @@ def _read_sidecar_seq(seq_path: Path) -> int:
     The pre/post identity comparisons remain as defence-in-depth for swaps
     of the file object itself. Re-walking the path instead would only move
     the window.
+    The identity witness also compares size (and ``st_ctime_ns`` on POSIX) and
+    the already-open handle is re-stat'ed after the bounded read. That refuses
+    the observed same-inode unlink/recreate case (which changes size and, on
+    POSIX, ctime) and rejects a content mutation during the read instead of
+    ingesting a mixed version. It is a narrowing witness, not an unforgeable
+    identity proof: same-inode replacements that reproduce size and ctime,
+    privileged ctime manipulation, and mutation after the final observation
+    remain outside the guarantee.
     Observation failures (``OSError`` from ``fstat``/``lstat``/read, or an
     underivable handle location) keep the documented unusable-sidecar
     fallback of 0 and never escape the frozen recent envelope (round-3
@@ -1138,6 +1170,16 @@ def _read_sidecar_seq(seq_path: Path) -> int:
         except OSError:
             # Unusable sidecar, not a route failure: fall back to 0 so the
             # recent handlers keep their frozen envelope (round-3 R3-3).
+            return 0
+        # Post-read content-version witness: the bytes just read must belong
+        # to the same observation (dev/ino/size/ctime) that passed the path
+        # and identity gates. A write that lands during the read is treated
+        # as an unusable sidecar (0), never ingested as a mixed version.
+        try:
+            final = os.fstat(fd)
+        except OSError:
+            return 0
+        if not _same_file(final, opened):
             return 0
     finally:
         try:

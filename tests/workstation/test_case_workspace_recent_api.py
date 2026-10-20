@@ -48,6 +48,7 @@ import subprocess
 import threading
 import time
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 from urllib.parse import urlencode
 
@@ -3831,11 +3832,98 @@ def test_sidecar_identity_comparison_distinguishes_objects(tmp_path: Path) -> No
     )
 
     # Same object reached under another name: identity follows the object,
-    # not the path spelling.
+    # not the path spelling. Re-stat AFTER creating the hard link because the
+    # link itself changes the inode's ctime; both sides must be observations
+    # of the same content version.
     alias = tmp_path / "alias.bin"
     os_mod.link(twin, alias)
+    e = os_mod.stat(twin)
     d = os_mod.stat(alias)
-    assert recent_mod._same_file(c, d) is True
+    assert recent_mod._same_file(e, d) is True
+
+
+@pytest.mark.skipif(
+    os.name == "nt",
+    reason="ctime comparison is POSIX-only; Windows st_ctime is not stable here",
+)
+def test_same_file_equal_dev_inode_size_changed_ctime_is_distinct() -> None:
+    """Deterministic ctime branch, independent of inode-allocation luck.
+
+    The real same-inode witness below is capability-gated because POSIX does
+    not guarantee inode reuse. This unit witness always exercises the
+    equal-dev/inode/size, changed-ctime case on ordinary POSIX runners.
+    """
+    base = SimpleNamespace(st_dev=7, st_ino=11, st_size=3, st_ctime_ns=100)
+    same = SimpleNamespace(st_dev=7, st_ino=11, st_size=3, st_ctime_ns=100)
+    changed = SimpleNamespace(st_dev=7, st_ino=11, st_size=3, st_ctime_ns=101)
+    assert recent_mod._same_file(base, same) is True
+    assert recent_mod._same_file(base, changed) is False
+
+
+@pytest.mark.skipif(
+    os.name == "nt",
+    reason=(
+        "same-inode reuse witness is POSIX-only; "
+        "Windows has the existing unlink/recreate witness"
+    ),
+)
+def test_sidecar_same_inode_same_size_replacement_is_refused_by_ctime_witness(
+    recent_env: tuple[Path, Path, Path],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Prove the actual same-inode residual is narrowed, not just dev/ino-tested.
+
+    The replacement is a real unlink/recreate at the validated path and must
+    reuse both ``st_dev`` and ``st_ino`` while keeping the same byte length.
+    Only the kernel-maintained ctime differs, so the old dev/ino-only check
+    accepts the replacement (RED: returns 2); the ctime/size witness refuses
+    it (GREEN: ``target_authority.symlink``). This is still not an
+    unforgeable identity proof: a replacement that reproduces ctime as well
+    remains the documented residual.
+    """
+    _, _, store = recent_env
+    sidecar = get_sidecar_seq_path(store)
+    sidecar.parent.mkdir(parents=True, exist_ok=True)
+    sidecar.write_text("1", encoding="utf-8")
+    original = sidecar.lstat()
+
+    real_open = recent_mod._open_sidecar
+    replacement = None
+
+    def same_inode_same_size_then_open(path: Path, flags: int) -> int:
+        nonlocal replacement
+        os.unlink(path)
+        for _attempt in range(64):
+            path.write_text("2", encoding="utf-8")
+            candidate = path.lstat()
+            if (
+                (candidate.st_dev, candidate.st_ino)
+                == (original.st_dev, original.st_ino)
+                and candidate.st_ctime_ns != original.st_ctime_ns
+            ):
+                replacement = candidate
+                return real_open(path, flags)
+            os.unlink(path)
+            time.sleep(0.002)
+        # Capability gate: POSIX does not guarantee inode reuse (tmpfs may
+        # allocate a fresh inode every time). Do not fail the default suite on
+        # allocator policy; the deterministic unit witness above always covers
+        # the equal-dev/inode/size, changed-ctime branch.
+        pytest.skip(
+            "filesystem did not expose a same-inode replacement with a changed ctime"
+        )
+
+    monkeypatch.setattr(recent_mod, "_open_sidecar", same_inode_same_size_then_open)
+    with pytest.raises(RecentError) as exc:
+        read_durable_high_water_seq(store)
+    assert exc.value.code == "target_authority.symlink"
+    assert replacement is not None
+    assert (replacement.st_dev, replacement.st_ino) == (
+        original.st_dev,
+        original.st_ino,
+    )
+    assert replacement.st_size == original.st_size
+    assert replacement.st_ctime_ns != original.st_ctime_ns
 
 
 def test_sidecar_replaced_between_validation_and_open_is_refused(
@@ -4226,6 +4314,66 @@ def test_sidecar_growth_after_validation_is_never_ingested(
         return real_read(fd)
 
     monkeypatch.setattr(recent_mod, "_read_sidecar_bytes", grow_then_read)
+    assert read_durable_high_water_seq(store) == 0
+
+
+def test_sidecar_size_change_during_read_is_unusable(
+    recent_env: tuple[Path, Path, Path],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Post-read size witness: mutate the already-open sidecar under the cap.
+
+    The write leaves a value (``22``) that is legal sidecar content and well
+    below ``_MAX_SIDECAR_BYTES``. Without the post-read ``fstat`` observation
+    the reader returns 22; with it the handle's changed size makes the sidecar
+    unusable (0). This is fail-capable on every platform.
+    """
+    _, _, store = recent_env
+    sidecar = get_sidecar_seq_path(store)
+    sidecar.parent.mkdir(parents=True, exist_ok=True)
+    sidecar.write_text("1", encoding="utf-8")
+
+    real_read = recent_mod._read_sidecar_bytes
+
+    def mutate_then_read(fd: int) -> bytes:
+        # Same inode, in-place truncation/write while the read handle is open.
+        sidecar.write_text("22", encoding="utf-8")
+        return real_read(fd)
+
+    monkeypatch.setattr(recent_mod, "_read_sidecar_bytes", mutate_then_read)
+    assert read_durable_high_water_seq(store) == 0
+
+
+@pytest.mark.skipif(
+    os.name == "nt",
+    reason="same-size ctime mutation witness is POSIX-only",
+)
+def test_sidecar_same_size_ctime_change_during_read_is_unusable(
+    recent_env: tuple[Path, Path, Path],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Post-read ctime witness: same-size mutation under the cap on POSIX.
+
+    ``1`` -> ``2`` keeps the byte length unchanged, so only the ctime
+    observation distinguishes the version. Without the post-read ``fstat`` the
+    reader returns 2; with it the changed ctime makes the sidecar unusable (0).
+    """
+    _, _, store = recent_env
+    sidecar = get_sidecar_seq_path(store)
+    sidecar.parent.mkdir(parents=True, exist_ok=True)
+    sidecar.write_text("1", encoding="utf-8")
+    before = sidecar.lstat()
+
+    real_read = recent_mod._read_sidecar_bytes
+
+    def mutate_then_read(fd: int) -> bytes:
+        sidecar.write_text("2", encoding="utf-8")
+        after = sidecar.lstat()
+        if after.st_size != before.st_size or after.st_ctime_ns == before.st_ctime_ns:
+            pytest.skip("filesystem did not expose a same-size ctime change")
+        return real_read(fd)
+
+    monkeypatch.setattr(recent_mod, "_read_sidecar_bytes", mutate_then_read)
     assert read_durable_high_water_seq(store) == 0
 
 
