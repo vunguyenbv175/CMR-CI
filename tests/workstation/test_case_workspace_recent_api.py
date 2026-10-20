@@ -2868,7 +2868,10 @@ def test_failed_writes_preserve_last_good_and_unreadable_store(
         # 2. Mock replace failure to test unwritable store
         orig_replace = os.replace
 
-        def _failing_replace(_src: Any, _dst: Any) -> None:
+        def _failing_replace(_src: Any, _dst: Any, **_kwargs: Any) -> None:
+            # POSIX production replacement is dir_fd-relative and passes
+            # src_dir_fd/dst_dir_fd; Windows uses the bare two-argument form.
+            # The injector must reject BOTH shapes to test the same failure path.
             raise PermissionError("Access denied mock")
 
         monkeypatch.setattr(os, "replace", _failing_replace)
@@ -3211,7 +3214,10 @@ def test_recent_failure_responses_never_disclose_store_paths(
 
         orig_replace = os.replace
 
-        def failing_replace(_src: Any, _dst: Any) -> None:
+        def failing_replace(_src: Any, _dst: Any, **_kwargs: Any) -> None:
+            # Accept the POSIX dir_fd kwargs as well as the Windows two-arg form;
+            # the intended failure is the injected OSError, not a TypeError from
+            # the injector itself.
             raise OSError(13, "Access denied", str(sentinel_store))
 
         monkeypatch.setattr(os, "replace", failing_replace)
@@ -3840,23 +3846,54 @@ def test_sidecar_replaced_between_validation_and_open_is_refused(
     open window — after link refusal and the pre-open ``lstat``, before the
     handle opens — must be refused, because the handle then names an object
     different from the one that was validated. The pre-fix shape kept only a
-    post-open comparison, which agrees with whatever the swap produced."""
+    post-open comparison, which agrees with whatever the swap produced.
+
+    Residual same-inode-reuse boundary (explicit, not claimed covered): if the
+    original inode is freed and the filesystem reuses the same dev/ino for the
+    replacement at the same path, identity-only ``_same_file`` cannot prove a
+    substitution. On POSIX this witness therefore holds the original handle
+    open and renames the original outside the validated path before creating
+    the replacement, forcing a genuinely different identity. The same-inode
+    reuse case remains a documented limitation and is not asserted as refused.
+    """
     _, _, store = recent_env
     sidecar = get_sidecar_seq_path(store)
     sidecar.parent.mkdir(parents=True, exist_ok=True)
     sidecar.write_text("1", encoding="utf-8")
 
     real_open = recent_mod._open_sidecar
+    held_fd: int | None = None
+    moved: Path | None = None
 
-    def swap_then_open(path: Path, flags: int) -> int:
-        path.unlink()
-        path.write_text("12345", encoding="utf-8")
-        return real_open(path, flags)
+    if os.name == "nt":
+        # The existing Windows witness already observes a different file ID
+        # after unlink/recreate; keep its native shape.
+        def swap_then_open(path: Path, flags: int) -> int:
+            path.unlink()
+            path.write_text("12345", encoding="utf-8")
+            return real_open(path, flags)
+    else:
+        # POSIX deterministic different-identity shape: retain the original
+        # inode via an open handle AND move it outside the validated path so
+        # the filesystem cannot reuse its inode for the replacement.
+        held_fd = os.open(sidecar, os.O_RDONLY)
+        moved = sidecar.with_name(sidecar.name + ".original")
 
-    monkeypatch.setattr(recent_mod, "_open_sidecar", swap_then_open)
-    with pytest.raises(RecentError) as exc:
-        read_durable_high_water_seq(store)
-    assert exc.value.code == "target_authority.symlink"
+        def swap_then_open(path: Path, flags: int) -> int:
+            os.rename(path, moved)
+            path.write_text("12345", encoding="utf-8")
+            return real_open(path, flags)
+
+    try:
+        monkeypatch.setattr(recent_mod, "_open_sidecar", swap_then_open)
+        with pytest.raises(RecentError) as exc:
+            read_durable_high_water_seq(store)
+        assert exc.value.code == "target_authority.symlink"
+    finally:
+        if held_fd is not None:
+            os.close(held_fd)
+        if moved is not None:
+            moved.unlink(missing_ok=True)
 
 
 def test_sidecar_parent_swap_in_open_window_is_refused(

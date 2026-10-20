@@ -273,16 +273,42 @@ def test_resolve_root_relative_refuses_kl001_kept(tmp_path: Path) -> None:
     assert doc["code"] == "target_authority.root_relative"
 
 
-def test_resolve_root_relative_drive_less_slash_rooted_path_refuses(tmp_path: Path) -> None:
-    """Finding 5: drive-less slash-rooted path (e.g. /synth-stage) on Windows refuses."""
-    _src, stage, _dest_b = _two_study_world(tmp_path)
+def test_resolve_root_relative_drive_less_slash_rooted_path_platform_expectation(
+    tmp_path: Path,
+) -> None:
+    """Finding 5, platform-precise: a drive-less slash-rooted path is
+    root-relative and refused on Windows, but the same spelling is an ordinary
+    absolute path on POSIX. The POSIX leg proves the positive absolute-path
+    contract with a real synthetic source root; neither leg removes or weakens
+    the Windows refusal assertion."""
+    src, stage, _dest_b = _two_study_world(tmp_path)
+    if os.name == "nt":
+        exit_code, doc, _err = _run_cli(
+            "resolve",
+            {
+                "source_root": "/synth-stage",
+                "stage_base": str(stage),
+                "study_uid": STUDY_A,
+            },
+            _repo_root(),
+        )
+        assert exit_code != 0
+        assert doc["code"] == "target_authority.root_relative"
+        return
+
+    # POSIX: slash-rooted is absolute; a real source root must resolve and
+    # reuse the already-staged Study A (positive counterpart to the Windows
+    # drive-less refusal above).
     exit_code, doc, _err = _run_cli(
         "resolve",
-        {"source_root": "/synth-stage", "stage_base": str(stage), "study_uid": STUDY_A},
+        {"source_root": str(src), "stage_base": str(stage), "study_uid": STUDY_A},
         _repo_root(),
     )
-    assert exit_code != 0
-    assert doc["code"] == "target_authority.root_relative"
+    assert exit_code == 0
+    assert doc["ok"] is True
+    assert doc["reuse"] is True
+    assert doc["identity"]["study_uid"] == STUDY_A
+    assert doc["identity"]["series_uids"] == [SERIES_A]
 
 
 def test_resolve_rejects_links_on_derived_destination_before_resolution(tmp_path: Path) -> None:

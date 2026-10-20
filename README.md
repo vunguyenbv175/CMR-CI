@@ -4,8 +4,8 @@ This is a **public testing snapshot**, not the CMR product, not a release, and n
 clinical system. It exists solely to run a bounded Linux verification of a
 byte-identical allowlisted dependency/test closure from the private CMR repository.
 
-- Source commit: `5472ea706b31d5bc8d2c7df339933466dd40df51`
-- Source tree: `b7945784f4a5413ec796477f0ca493aba0c87b2b`
+- Source commit (merged main): `7877cca83e7a56c6349200b5406c7151b2830182`
+- Source tree: `0be52a71ad2ca6875186501f33ae1eeeef22b93c`
 - Export manifest: `PUBLIC_MANIFEST.json` (maps every exported source/test/static file
   to its upstream path and SHA-256)
 - Manifest verifier: `ci/verify_manifest.py`
@@ -32,16 +32,29 @@ transport. The recent API file includes POSIX security witnesses (symlinked
 store/sidecar, `dir_fd`, `O_DIRECTORY | O_NOFOLLOW`, ancestor swaps) that are
 skipped on Windows and execute on `ubuntu-latest`.
 
+## Known residual boundary (not fixed, not waived)
+
+The corrected sidecar replacement witness forces a genuinely different identity:
+it holds the original inode open and renames it outside the validated path before
+creating the replacement. It does **not** cover same-inode reuse. Production
+`_same_file` compares only `(st_dev, st_ino)`, so a same-path substitution that
+reuses the inode can still be accepted. That is a residual local same-user
+integrity limitation, not a remote/loopback bypass. This snapshot does not fix or
+waive it; a stronger content/version binding is a separate bounded scope decision.
+
 ## Explicit non-claims
 
 Linux results apply **only** to this byte-identical exported closure. They do not
 establish:
 
+- that the original source commit `5472ea706b31d5bc8d2c7df339933466dd40df51`
+  was green, or that the full private Linux suite passed;
 - full-suite, whole-repository, Windows, or desktop-native results;
 - milestone acceptance, release qualification, clinical validation, or physician
   visual acceptance;
 - correctness of omitted packages/services, BAAI/ML/GPU paths, or any real DICOM
-  or patient data path.
+  or patient data path;
+- any security waiver: the same-inode residual above remains open.
 
 The selected tests use synthetic generated DICOM only. Do not infer clinical
 correctness from CI.
