@@ -1,0 +1,654 @@
+{
+  "ci_only_files": [
+    {
+      "bytes": 262,
+      "kind": "ci-only",
+      "note": "CI dependency pins; not exported upstream source",
+      "path": "requirements-ci.txt",
+      "sha256": "0721931c6edc89211b2fb6c79564fae4f29dc5fdb2c7497aa34050457042c6dc"
+    },
+    {
+      "bytes": 286,
+      "kind": "ci-only",
+      "note": "CI-only pytest configuration; upstream pytest config is in pyproject.toml",
+      "path": "pytest.ini",
+      "sha256": "7ab822d55301b579906c80e92466d9da8d60a0dabfb8736779585e0799106e6f"
+    },
+    {
+      "bytes": 3431,
+      "kind": "ci-only",
+      "note": "CI-only repository README; not upstream source",
+      "path": "README.md",
+      "sha256": "74b950a98a2aad0e1bb71437a7a8986f630fb011b4dbf8a83eb5bc261a0b02f1"
+    },
+    {
+      "bytes": 1008,
+      "kind": "ci-only",
+      "note": "CI-only notice; no upstream LICENSE exists",
+      "path": "NOTICE.md",
+      "sha256": "f626a128df3c0715318c3c02b1249327e7b5403580273c47fa6d203d78a8687d"
+    },
+    {
+      "bytes": 3048,
+      "kind": "ci-only",
+      "note": "CI-only manifest verifier",
+      "path": "ci/verify_manifest.py",
+      "sha256": "2e5edb8607b3db93084ab8031eea4fc1732cbfbc107a837ca1ecf715bf6a28ab"
+    },
+    {
+      "bytes": 2296,
+      "kind": "ci-only",
+      "note": "CI-only GitHub Actions workflow; hosted ubuntu-latest only",
+      "path": ".github/workflows/linux-focused.yml",
+      "sha256": "2ab704cd6a173468be3237290385deacdfa3b45102b20063405bd1eb7dacbe5f"
+    }
+  ],
+  "files": [
+    {
+      "bytes": 367,
+      "public_path": "packages/cmr_contours/__init__.py",
+      "source_path": "packages/cmr_contours/__init__.py",
+      "source_sha256": "03c5e025569d550503b2e5d1a91147d368a3c33b387e49b37af83d717965f3a0"
+    },
+    {
+      "bytes": 8601,
+      "public_path": "packages/cmr_contours/conversion.py",
+      "source_path": "packages/cmr_contours/conversion.py",
+      "source_sha256": "de88c3d61713975d63b0c3c22457be9d8f31d4d0036dbaa8348ccaa0734ab24e"
+    },
+    {
+      "bytes": 45360,
+      "public_path": "packages/cmr_contours/editing.py",
+      "source_path": "packages/cmr_contours/editing.py",
+      "source_sha256": "2e1d4fef8a2140996317225c22ad4bdb02c7ff9da54ae6e0c796d68b73dc228c"
+    },
+    {
+      "bytes": 4499,
+      "public_path": "packages/cmr_contours/model.py",
+      "source_path": "packages/cmr_contours/model.py",
+      "source_sha256": "5b26c6a061ff043ce5336ce8d909f1d143b06c52798897ae0897b976135bf76f"
+    },
+    {
+      "bytes": 2413,
+      "public_path": "packages/cmr_core/__init__.py",
+      "source_path": "packages/cmr_core/__init__.py",
+      "source_sha256": "c014ad34c00bb2753776e8306e982789eae9bf228e7ae26fa8ad35522883b94d"
+    },
+    {
+      "bytes": 11687,
+      "public_path": "packages/cmr_core/cine.py",
+      "source_path": "packages/cmr_core/cine.py",
+      "source_sha256": "5925881ce24575f2b3a1cc93ba0af8b97fc3be062e1c97dd74cc775eec944c37"
+    },
+    {
+      "bytes": 63499,
+      "public_path": "packages/cmr_core/domain_types.py",
+      "source_path": "packages/cmr_core/domain_types.py",
+      "source_sha256": "bb2bb045f62c1d55ae15ea6346ff2cb1ebb8c69438eeb639d6b8acc28f716b76"
+    },
+    {
+      "bytes": 4946,
+      "public_path": "packages/cmr_core/errors.py",
+      "source_path": "packages/cmr_core/errors.py",
+      "source_sha256": "06cc7bc1a33a0296a03a46b9ac6ff8636c9d041799e4686aa4e34614ecdb5049"
+    },
+    {
+      "bytes": 18243,
+      "public_path": "packages/cmr_core/geometry.py",
+      "source_path": "packages/cmr_core/geometry.py",
+      "source_sha256": "d935a5713900c10f3eba987c60927caf38654ff851d71075a517b18bbc302fb3"
+    },
+    {
+      "bytes": 2309,
+      "public_path": "packages/cmr_core/provenance.py",
+      "source_path": "packages/cmr_core/provenance.py",
+      "source_sha256": "8ec519282f1d2ea29c96135f1e4934c3259aef9185260d14011d1f93470a16fa"
+    },
+    {
+      "bytes": 7253,
+      "public_path": "packages/cmr_core/result_reference.py",
+      "source_path": "packages/cmr_core/result_reference.py",
+      "source_sha256": "6bd2df19e2d7b0509c4da823a41bb245b15a40e2bef42ba2dc6da0a5d580713f"
+    },
+    {
+      "bytes": 3094,
+      "public_path": "packages/cmr_core/segmentation.py",
+      "source_path": "packages/cmr_core/segmentation.py",
+      "source_sha256": "38673b4ae325cf642c0eafaa81a66ef36ca4275a0b0caf2c2a7aadc2603b1907"
+    },
+    {
+      "bytes": 8579,
+      "public_path": "packages/cmr_core/source_manifest.py",
+      "source_path": "packages/cmr_core/source_manifest.py",
+      "source_sha256": "ee749d3c3dff2667942e8234529ce158cc27e77d9bb923a838373f1dbbed275e"
+    },
+    {
+      "bytes": 3125,
+      "public_path": "packages/cmr_core/study.py",
+      "source_path": "packages/cmr_core/study.py",
+      "source_sha256": "d104c541be08bb29f5374c2b7b1ab04665b7aecc6c30fa61cb9bd6d5c44670a1"
+    },
+    {
+      "bytes": 804,
+      "public_path": "packages/cmr_dicom/__init__.py",
+      "source_path": "packages/cmr_dicom/__init__.py",
+      "source_sha256": "66c1f58bdbe7cd05be0ac711a99a0db209784bb4eb06ca70bccb9bcf7f7b99b2"
+    },
+    {
+      "bytes": 17745,
+      "public_path": "packages/cmr_dicom/classify.py",
+      "source_path": "packages/cmr_dicom/classify.py",
+      "source_sha256": "2b1adac4a5e5bddf87d6cf7989e99943f763cfca11e54035218efb900294affd"
+    },
+    {
+      "bytes": 8850,
+      "public_path": "packages/cmr_dicom/discovery.py",
+      "source_path": "packages/cmr_dicom/discovery.py",
+      "source_sha256": "6092b4716c2b63edeb69951474cc658fafd6f16511d9ad294b2b7958dcafcfe3"
+    },
+    {
+      "bytes": 9257,
+      "public_path": "packages/cmr_dicom/enhanced.py",
+      "source_path": "packages/cmr_dicom/enhanced.py",
+      "source_sha256": "95f37c0dce3c3c2ed39e2d974e603546d673dcbd60fe666a56ba55cd46e3e4ff"
+    },
+    {
+      "bytes": 3703,
+      "public_path": "packages/cmr_dicom/metadata.py",
+      "source_path": "packages/cmr_dicom/metadata.py",
+      "source_sha256": "a5ff35782f6b798d7507ae02886be67de3168930a27afc51848b3c0dad27e847"
+    },
+    {
+      "bytes": 33985,
+      "public_path": "packages/cmr_dicom/pipeline.py",
+      "source_path": "packages/cmr_dicom/pipeline.py",
+      "source_sha256": "2d8309172bc4c79140859a839895e59a8b3dbad12c168fd08eae8bb2d7d730dc"
+    },
+    {
+      "bytes": 6821,
+      "public_path": "packages/cmr_dicom/reader.py",
+      "source_path": "packages/cmr_dicom/reader.py",
+      "source_sha256": "79d34652241c050aec919b90338706835391c8507f20a918edcf7660bcfa84ac"
+    },
+    {
+      "bytes": 4295,
+      "public_path": "packages/cmr_dicom/study.py",
+      "source_path": "packages/cmr_dicom/study.py",
+      "source_sha256": "3cee4bcce2eb39c891bc283f6bfea370dbed056c0d4ecf2b787d3a4750da8122"
+    },
+    {
+      "bytes": 5771,
+      "public_path": "packages/cmr_dicom/tags.py",
+      "source_path": "packages/cmr_dicom/tags.py",
+      "source_sha256": "06644ea82423d5b88c92e528101d6e4fba3a73c3326e1db24cee82b7ddf6a2a3"
+    },
+    {
+      "bytes": 908,
+      "public_path": "packages/cmr_geometry/__init__.py",
+      "source_path": "packages/cmr_geometry/__init__.py",
+      "source_sha256": "9db003049923f9d85d222ec472e1b7b17a134da43daee1a5ed1747dba992ec78"
+    },
+    {
+      "bytes": 11738,
+      "public_path": "packages/cmr_geometry/ordering.py",
+      "source_path": "packages/cmr_geometry/ordering.py",
+      "source_sha256": "e8fbdf5a91d2e42207bbb4926df24e8bf0239073ff0447723d7528141ddecb2c"
+    },
+    {
+      "bytes": 4282,
+      "public_path": "packages/cmr_geometry/polygon.py",
+      "source_path": "packages/cmr_geometry/polygon.py",
+      "source_sha256": "4635a2bcbd33e9b6f55e3bf4ba7e5ef042b9d75df5b56f18082a92e9f3b12975"
+    },
+    {
+      "bytes": 5531,
+      "public_path": "packages/cmr_geometry/stack.py",
+      "source_path": "packages/cmr_geometry/stack.py",
+      "source_sha256": "00faf8be13bace8b8c0c3fe2884bec367d5b0fe23a3ed6d10afd9ceb4282de62"
+    },
+    {
+      "bytes": 2568,
+      "public_path": "packages/cmr_geometry/transforms.py",
+      "source_path": "packages/cmr_geometry/transforms.py",
+      "source_sha256": "ba25599e4be39d061ec989153452f70d79dc93ce160bef40bef2106d101fa19a"
+    },
+    {
+      "bytes": 1587,
+      "public_path": "packages/cmr_persistence/__init__.py",
+      "source_path": "packages/cmr_persistence/__init__.py",
+      "source_sha256": "58baf709d7771a90c8e948b570890f424ab47250facf01e04323d488a3cfde93"
+    },
+    {
+      "bytes": 19521,
+      "public_path": "packages/cmr_persistence/reconstruct.py",
+      "source_path": "packages/cmr_persistence/reconstruct.py",
+      "source_sha256": "b30b3c8edbbfce8747d0c58a61164bcda32dc88cc2e2472f4debbb271ddb5194"
+    },
+    {
+      "bytes": 58998,
+      "public_path": "packages/cmr_persistence/records.py",
+      "source_path": "packages/cmr_persistence/records.py",
+      "source_sha256": "45c0c29034d228a89a88cfe9e0e40365938174f4848aad4565bdc2f3e5991a37"
+    },
+    {
+      "bytes": 377522,
+      "public_path": "packages/cmr_persistence/store.py",
+      "source_path": "packages/cmr_persistence/store.py",
+      "source_sha256": "5c42d8142d97e3d940b4675f76d7631aa7fc8ffa0c9dcb4dd5c8fe97facc7382"
+    },
+    {
+      "bytes": 427,
+      "public_path": "packages/cmr_qc/__init__.py",
+      "source_path": "packages/cmr_qc/__init__.py",
+      "source_sha256": "ee6d1d403537ff9d05b5b5d79bee02ee5cb0ef243b14136f266fc52498434dc0"
+    },
+    {
+      "bytes": 12851,
+      "public_path": "packages/cmr_qc/prediction_routing.py",
+      "source_path": "packages/cmr_qc/prediction_routing.py",
+      "source_sha256": "1ddd18d6cd0b6e1528d2ff4b84fff3698a5f3a234a86623eac0417bc9c1e67a8"
+    },
+    {
+      "bytes": 898,
+      "public_path": "packages/cmr_qc/report.py",
+      "source_path": "packages/cmr_qc/report.py",
+      "source_sha256": "264d1e882e04e4c3a7a488686467d0e0ddd6108f40bfd63188cd6b27318d68d2"
+    },
+    {
+      "bytes": 3992,
+      "public_path": "packages/cmr_qc/rules.py",
+      "source_path": "packages/cmr_qc/rules.py",
+      "source_sha256": "bc38e70d92ef6068de42939d64ae196d6c3a18bf0e74b874ca5a650558b53f46"
+    },
+    {
+      "bytes": 33272,
+      "public_path": "packages/cmr_qc/snapshot.py",
+      "source_path": "packages/cmr_qc/snapshot.py",
+      "source_sha256": "fcd0087b584a484c14d8cbf19094e2a13ca681713edcb2db5ce1fccdd3903987"
+    },
+    {
+      "bytes": 1659,
+      "public_path": "packages/cmr_quantification/__init__.py",
+      "source_path": "packages/cmr_quantification/__init__.py",
+      "source_sha256": "56c73b30c7af33cae4bc652aa9ec3a895485929574bd9f35131544bda8b958d2"
+    },
+    {
+      "bytes": 4805,
+      "public_path": "packages/cmr_quantification/function.py",
+      "source_path": "packages/cmr_quantification/function.py",
+      "source_sha256": "7200b759a2d22c23e35f1d103f34009fc4e43525609e178ad4c53ee714489e98"
+    },
+    {
+      "bytes": 90893,
+      "public_path": "packages/cmr_quantification/measurements.py",
+      "source_path": "packages/cmr_quantification/measurements.py",
+      "source_sha256": "1556d1015be6ff64f6e4477c68dd101fba57b85013dcabf51a7376581618db7d"
+    },
+    {
+      "bytes": 15685,
+      "public_path": "packages/cmr_quantification/reference_ranges.py",
+      "source_path": "packages/cmr_quantification/reference_ranges.py",
+      "source_sha256": "9196ebf67616832567b7d0ba51aceeede5d2a260b6092a36e47d57fc0945af4e"
+    },
+    {
+      "bytes": 2573,
+      "public_path": "packages/cmr_quantification/units.py",
+      "source_path": "packages/cmr_quantification/units.py",
+      "source_sha256": "07e538a0ca0210110ef30b7ab5bcd6db3a9e3b2d66f5d678f2fb991365f348e6"
+    },
+    {
+      "bytes": 6197,
+      "public_path": "packages/cmr_quantification/volume.py",
+      "source_path": "packages/cmr_quantification/volume.py",
+      "source_sha256": "4fadf31cd0ac041a1c09134e577b5b7d89ad91f736de629409666fd444695a24"
+    },
+    {
+      "bytes": 1049,
+      "public_path": "packages/cmr_reporting/__init__.py",
+      "source_path": "packages/cmr_reporting/__init__.py",
+      "source_sha256": "31d9706a4beb252ee9e022a2e2eb406c91a313a0b587f57cf237c0e504ad4117"
+    },
+    {
+      "bytes": 7495,
+      "public_path": "packages/cmr_reporting/assembler.py",
+      "source_path": "packages/cmr_reporting/assembler.py",
+      "source_sha256": "f38167b66ff4e64eb23edf9e5dfbebad270a077ba733fd21eee21af1d8d82083"
+    },
+    {
+      "bytes": 494,
+      "public_path": "packages/cmr_reporting/errors.py",
+      "source_path": "packages/cmr_reporting/errors.py",
+      "source_sha256": "6cae71428ec6047ca6dbc8e210287925db272465fa173439dbf71d319cba8b80"
+    },
+    {
+      "bytes": 11601,
+      "public_path": "packages/cmr_reporting/model.py",
+      "source_path": "packages/cmr_reporting/model.py",
+      "source_sha256": "9c66bb0f589b6a2e9350d745ec6b0570223b4b3c83a69f67a69f4f773e8f6cc8"
+    },
+    {
+      "bytes": 2843,
+      "public_path": "packages/cmr_reporting/render_csv.py",
+      "source_path": "packages/cmr_reporting/render_csv.py",
+      "source_sha256": "5f4ed02e2baf3109225f693155b2088fcaa431525530e31c3cf9683165e7ce67"
+    },
+    {
+      "bytes": 692,
+      "public_path": "packages/cmr_reporting/render_json.py",
+      "source_path": "packages/cmr_reporting/render_json.py",
+      "source_sha256": "f0f30c42cc7eed143be40e15e2190add028b972d1b23e4919d2ef3a6e0e51d4b"
+    },
+    {
+      "bytes": 6398,
+      "public_path": "packages/cmr_reporting/render_pdf.py",
+      "source_path": "packages/cmr_reporting/render_pdf.py",
+      "source_sha256": "f003fd2cd467a058044c57951f4b64748c68f8b282c07ceb19ec8562e0f59ef9"
+    },
+    {
+      "bytes": 1454,
+      "public_path": "packages/cmr_reporting/reproduce.py",
+      "source_path": "packages/cmr_reporting/reproduce.py",
+      "source_sha256": "830262954f1ab4777432fc0de87fac7d5043b2118d72be1b24d58423350cada4"
+    },
+    {
+      "bytes": 1769,
+      "public_path": "packages/cmr_viewer/__init__.py",
+      "source_path": "packages/cmr_viewer/__init__.py",
+      "source_sha256": "00c78cc3bfbc7da21dffe51b2ce1d54a89970e8dfb53f204e967de9fc54f291d"
+    },
+    {
+      "bytes": 43327,
+      "public_path": "packages/cmr_viewer/app.py",
+      "source_path": "packages/cmr_viewer/app.py",
+      "source_sha256": "7fb4edeef8899f0da12789fa0f131fe90fe955ac63b7d2b5df353fcd734c37d9"
+    },
+    {
+      "bytes": 7016,
+      "public_path": "packages/cmr_viewer/playback.py",
+      "source_path": "packages/cmr_viewer/playback.py",
+      "source_sha256": "f24a0de54d8dd0c757f8138a12f260688113cb5b2c3853d56345ba7a95932156"
+    },
+    {
+      "bytes": 27902,
+      "public_path": "packages/cmr_viewer/renderer.py",
+      "source_path": "packages/cmr_viewer/renderer.py",
+      "source_sha256": "b4c7eb09c2b41912bf9cad8aa264a159c6ab5d393c40ee07707a81d99082d397"
+    },
+    {
+      "bytes": 32389,
+      "public_path": "packages/cmr_viewer/shell.py",
+      "source_path": "packages/cmr_viewer/shell.py",
+      "source_sha256": "b7f90d8db69815b9c515ce0beb35586a8504d2881527301049690380fcf57a2c"
+    },
+    {
+      "bytes": 46698,
+      "public_path": "packages/cmr_viewer/state.py",
+      "source_path": "packages/cmr_viewer/state.py",
+      "source_sha256": "443f71ea0efc7ede433ccd7ca42a3262e4c9a634839fd4d61a09909bc92f99a4"
+    },
+    {
+      "bytes": 1679,
+      "public_path": "packages/cmr_workflow/__init__.py",
+      "source_path": "packages/cmr_workflow/__init__.py",
+      "source_sha256": "fbf08d085507ba53d2a67aa9c682473701fd86620b6a3a7293483771f59a359f"
+    },
+    {
+      "bytes": 4340,
+      "public_path": "packages/cmr_workflow/ai_runs.py",
+      "source_path": "packages/cmr_workflow/ai_runs.py",
+      "source_sha256": "f9a9ec9ecbe27004c09973bfa0681190b226816095315e02399b5a19cf889840"
+    },
+    {
+      "bytes": 220333,
+      "public_path": "packages/cmr_workflow/controller.py",
+      "source_path": "packages/cmr_workflow/controller.py",
+      "source_sha256": "04d7d8e78c5213955c716e4bc4d9509b4591293e9b73b5d381161671e1b94c87"
+    },
+    {
+      "bytes": 9403,
+      "public_path": "packages/cmr_workflow/correction.py",
+      "source_path": "packages/cmr_workflow/correction.py",
+      "source_sha256": "e43a9a11165a65218b6a8199c4a80edc4bc6223e62fff7ea4e5f13e1238971c3"
+    },
+    {
+      "bytes": 37404,
+      "public_path": "packages/cmr_workflow/coverage.py",
+      "source_path": "packages/cmr_workflow/coverage.py",
+      "source_sha256": "319d0313b3bf5f80c15baa27f9c8a8f2db495a3a2ed530e6ad9ab0b46eb9995c"
+    },
+    {
+      "bytes": 20543,
+      "public_path": "packages/cmr_workflow/topology_disposition.py",
+      "source_path": "packages/cmr_workflow/topology_disposition.py",
+      "source_sha256": "dc2eab73a09b1f7b2055453a6adb9b62f9788e090d6870ce7902cd4847167c96"
+    },
+    {
+      "bytes": 443,
+      "public_path": "services/inference/__init__.py",
+      "source_path": "services/inference/__init__.py",
+      "source_sha256": "f9a0842848114a4a040847086378952c3702282d616d9f53e3d9f4961a62f660"
+    },
+    {
+      "bytes": 6945,
+      "public_path": "services/inference/failures.py",
+      "source_path": "services/inference/failures.py",
+      "source_sha256": "57c9669c7b6e239696d22f356fc8aad52cd415a27c8cf06423a61249d4d9c9a4"
+    },
+    {
+      "bytes": 6717,
+      "public_path": "services/inference/providers/__init__.py",
+      "source_path": "services/inference/providers/__init__.py",
+      "source_sha256": "30c6fa15f26abe18c98ac64443dce591e22f02d78b2734624143f1c16e75c951"
+    },
+    {
+      "bytes": 711,
+      "public_path": "services/workstation/__init__.py",
+      "source_path": "services/workstation/__init__.py",
+      "source_sha256": "b0fdfa641c33ab3171e08a70d7bd96e27134c0aa08ed78f33bdac36ddc96360d"
+    },
+    {
+      "bytes": 2242,
+      "public_path": "services/workstation/__main__.py",
+      "source_path": "services/workstation/__main__.py",
+      "source_sha256": "26f83bccca72ac2fb71f7705a3d4e72986b45503fc3550f8bfb3fc0b6ac1dff2"
+    },
+    {
+      "bytes": 160635,
+      "public_path": "services/workstation/actions.py",
+      "source_path": "services/workstation/actions.py",
+      "source_sha256": "abcf6e23cbce5c94b304dd98b0542895a4d90dd62d5e694cd9d44089684af393"
+    },
+    {
+      "bytes": 78432,
+      "public_path": "services/workstation/api.py",
+      "source_path": "services/workstation/api.py",
+      "source_sha256": "452e83607ed22147a1ea81470bd666b09cb1c875ec8744882ebcf3daa538d32a"
+    },
+    {
+      "bytes": 684,
+      "public_path": "services/workstation/constants.py",
+      "source_path": "services/workstation/constants.py",
+      "source_sha256": "2e738340774f1010c563d7e0a498bd72e93aab3e266000bf23acbc707cbea2c8"
+    },
+    {
+      "bytes": 9565,
+      "public_path": "services/workstation/frames.py",
+      "source_path": "services/workstation/frames.py",
+      "source_sha256": "c9a0042328c93e36a3b6660270df736f7ee4105503b0f5577bff2650d4f58887"
+    },
+    {
+      "bytes": 50114,
+      "public_path": "services/workstation/jobs.py",
+      "source_path": "services/workstation/jobs.py",
+      "source_sha256": "1719ca768cc2bb2dbb7f059f55edc5058babeb323f832902082d5175b562dbe3"
+    },
+    {
+      "bytes": 9056,
+      "public_path": "services/workstation/library.py",
+      "source_path": "services/workstation/library.py",
+      "source_sha256": "19c693dae12aaa7a07f9f8e01c996bc0f56e8cfe775cd93dfee4398e41f7b8b7"
+    },
+    {
+      "bytes": 105860,
+      "public_path": "services/workstation/recent.py",
+      "source_path": "services/workstation/recent.py",
+      "source_sha256": "3fb82a904b1459ac567e249e4e40dad6dc4ba6e35a99e7e06e82c0dabc66a72f"
+    },
+    {
+      "bytes": 31296,
+      "public_path": "services/workstation/server.py",
+      "source_path": "services/workstation/server.py",
+      "source_sha256": "e6083fc38823484255c795e42c45634fc7e19e850206706e5d32c72921d0fb02"
+    },
+    {
+      "bytes": 118997,
+      "public_path": "services/workstation/static/app.js",
+      "source_path": "services/workstation/static/app.js",
+      "source_sha256": "35f46520ca71392c68a953765143068b66131b1913531ccdd2d0d3d526d7626b"
+    },
+    {
+      "bytes": 4078,
+      "public_path": "services/workstation/static/index.html",
+      "source_path": "services/workstation/static/index.html",
+      "source_sha256": "f41705820dc6acf5d4e5aea409dd2ee3df3725734f5784d3d7aacbfbe93c1825"
+    },
+    {
+      "bytes": 510,
+      "public_path": "services/workstation/static/kbmap.js",
+      "source_path": "services/workstation/static/kbmap.js",
+      "source_sha256": "d37b3d18b10076d78e217d24b41bf2d59b741122e200296f9c75053e032b8471"
+    },
+    {
+      "bytes": 2844,
+      "public_path": "services/workstation/static/style.css",
+      "source_path": "services/workstation/static/style.css",
+      "source_sha256": "29a395714be0b8f86dbc13e1fcf58f202dc3707b083bc5d6de610836f8205ab0"
+    },
+    {
+      "bytes": 43435,
+      "public_path": "services/workstation/target_authority.py",
+      "source_path": "services/workstation/target_authority.py",
+      "source_sha256": "7ee453fc97c55fe810cc8a2d8d8de7d145bf67872f560c32b5af2e0eb722761b"
+    },
+    {
+      "bytes": 0,
+      "public_path": "tests/__init__.py",
+      "source_path": "tests/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1061,
+      "public_path": "tests/conftest.py",
+      "source_path": "tests/conftest.py",
+      "source_sha256": "c978803992364bba61f324b9195669491f081275bc0b0e5b4dd7c55964ea80b2"
+    },
+    {
+      "bytes": 0,
+      "public_path": "tests/synth/__init__.py",
+      "source_path": "tests/synth/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5393,
+      "public_path": "tests/synth/generate_dicom.py",
+      "source_path": "tests/synth/generate_dicom.py",
+      "source_sha256": "506bdabc35b53af81c82e28bcd8f3fe58248b6cd24c142e17374beb25f57382c"
+    },
+    {
+      "bytes": 3197,
+      "public_path": "tests/synth/helpers.py",
+      "source_path": "tests/synth/helpers.py",
+      "source_sha256": "2b187fd3eda8ac77760dae2e9052b3eceadafbd5acaa8f46775d2e2f95e853be"
+    },
+    {
+      "bytes": 59,
+      "public_path": "tests/workstation/__init__.py",
+      "source_path": "tests/workstation/__init__.py",
+      "source_sha256": "d652b7cd166dfbaeeeb6dcc36c83df6be4f77e621a2a85c9798d83083f1ad255"
+    },
+    {
+      "bytes": 12321,
+      "public_path": "tests/workstation/support.py",
+      "source_path": "tests/workstation/support.py",
+      "source_sha256": "49b0a2f7ae8e10ca8310c6039d2bfd6fe4d020662ad0f2f8435f38f380ef41ad"
+    },
+    {
+      "bytes": 15645,
+      "public_path": "tests/workstation/test_case_workspace_open.py",
+      "source_path": "tests/workstation/test_case_workspace_open.py",
+      "source_sha256": "9983207811b40cb0d1a27c984abdb7837b04f397725f505fe98212e20cbc04d0"
+    },
+    {
+      "bytes": 440575,
+      "public_path": "tests/workstation/test_case_workspace_recent_api.py",
+      "source_path": "tests/workstation/test_case_workspace_recent_api.py",
+      "source_sha256": "c2d70c6db4ae6789db5b1577005622913d3392ad57e6914e9930e2ad75ac0c29"
+    },
+    {
+      "bytes": 7778,
+      "public_path": "tests/workstation/test_case_workspace_switch.py",
+      "source_path": "tests/workstation/test_case_workspace_switch.py",
+      "source_sha256": "be1efcf4b3e2a9a2e3ed26f39fabd073c71ec10e98f7e27f7dce88a25c6d5f47"
+    },
+    {
+      "bytes": 38830,
+      "public_path": "tests/workstation/test_case_workspace_switch_study.py",
+      "source_path": "tests/workstation/test_case_workspace_switch_study.py",
+      "source_sha256": "c12368fe4710e2099b0aad5e6860c02d267d14889dc88c682353bb6a9f8cf980"
+    },
+    {
+      "bytes": 12120,
+      "public_path": "tests/workstation/test_frame_pixels_endpoint.py",
+      "source_path": "tests/workstation/test_frame_pixels_endpoint.py",
+      "source_sha256": "996e29e7a10316431259f636606632ec875ace09c665ad510ad95ed8a490cfb0"
+    },
+    {
+      "bytes": 8411,
+      "public_path": "tests/workstation/test_series_selection_api.py",
+      "source_path": "tests/workstation/test_series_selection_api.py",
+      "source_sha256": "2417850b0cbe0aab270d74e6bf5c64532c854337231e72a493eccc30349e24ab"
+    },
+    {
+      "bytes": 28637,
+      "public_path": "tests/workstation/test_server_api.py",
+      "source_path": "tests/workstation/test_server_api.py",
+      "source_sha256": "1ce19688b46a61ee35681f56723abb8cf74deddc1c9510ab0806b874f6a5dc76"
+    },
+    {
+      "bytes": 3673,
+      "public_path": "tests/workstation/test_static_assets.py",
+      "source_path": "tests/workstation/test_static_assets.py",
+      "source_sha256": "da13c3a6728bb8a70514b127111ce7c68b62abf82c07d101cfc561520ad09d11"
+    }
+  ],
+  "generated_at_utc": "2026-10-20T08:56:48Z",
+  "purpose": "Public Linux-focused CI verification snapshot; not a product or clinical release",
+  "schema": "cmr-public-ci-snapshot-manifest/v1",
+  "selection": {
+    "excluded": [
+      "full test suite and all unrelated packages/services",
+      "desktop/Tauri/frontend/webapp and native visual evidence",
+      "BAAI/ML/GPU/weights, real DICOM, patient data, reports/contracts/orchestration"
+    ],
+    "rationale": "Focused recent-cases API plus required workstation neighbors; the recent API file carries POSIX symlink/dir_fd security witnesses for Linux execution.",
+    "tests": [
+      "tests/workstation/test_case_workspace_recent_api.py",
+      "tests/workstation/test_case_workspace_open.py",
+      "tests/workstation/test_case_workspace_switch.py",
+      "tests/workstation/test_case_workspace_switch_study.py",
+      "tests/workstation/test_server_api.py",
+      "tests/workstation/test_static_assets.py",
+      "tests/workstation/test_series_selection_api.py",
+      "tests/workstation/test_frame_pixels_endpoint.py"
+    ]
+  },
+  "source_commit_time": "2026-10-19T23:08:01+07:00",
+  "source_repository": "private upstream CMR repository",
+  "source_sha": "5472ea706b31d5bc8d2c7df339933466dd40df51",
+  "source_tree": "b7945784f4a5413ec796477f0ca493aba0c87b2b",
+  "totals": {
+    "ci_only_files": 6,
+    "exported_bytes": 2626206,
+    "exported_source_test_static_files": 96
+  }
+}

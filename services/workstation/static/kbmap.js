@@ -1,0 +1,2 @@
+/* KEYBOARD_SHORTCUTS = {" ":"toggle_playback","ArrowLeft":"step_backward","ArrowRight":"step_forward","ArrowUp":"previous_slice","ArrowDown":"next_slice","+":"increase_speed","-":"decrease_speed","e":"mark_ed","s":"mark_es","?":"toggle_shortcuts"} */
+window.CMR_KEYBOARD_SHORTCUTS = {" ":"toggle_playback","ArrowLeft":"step_backward","ArrowRight":"step_forward","ArrowUp":"previous_slice","ArrowDown":"next_slice","+":"increase_speed","-":"decrease_speed","e":"mark_ed","s":"mark_es","?":"toggle_shortcuts"};

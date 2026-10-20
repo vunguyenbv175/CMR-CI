@@ -1,0 +1,79 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
+  background: #111820;
+  color: #e8eef5;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-width: 1060px; }
+
+.workstation {
+  display: grid;
+  grid-template-columns: 220px minmax(800px, 1fr) 300px;
+  min-height: 100vh;
+}
+
+.series-browser, .controls {
+  padding: 16px;
+  background: #18232e;
+}
+
+.series-browser { border-right: 1px solid #334454; }
+.controls { border-left: 1px solid #334454; overflow-y: auto; }
+
+h1, h2 { margin: 0 0 12px; }
+h1 { font-size: 1.25rem; }
+h2 { font-size: 0.95rem; color: #a9c7e3; }
+
+.series-browser ul { list-style: none; padding: 0; margin: 0; }
+.series-browser li { margin: 5px 0; }
+.series-browser button { width: 100%; text-align: left; }
+
+.viewport { display: flex; flex-direction: column; align-items: center; padding: 24px; }
+.canvas-wrap { overflow: hidden; max-width: 100%; transform-origin: center center; }
+#cine-canvas { display: block; width: 800px; height: 500px; background: #000; transform-origin: center center; }
+
+section { margin-bottom: 22px; }
+button, select, input { font: inherit; }
+button, a { color: #e8eef5; background: #2c4f6b; border: 1px solid #5c89ad; border-radius: 3px; padding: 6px 8px; }
+button { cursor: pointer; margin: 2px 0; }
+a { display: inline-block; text-decoration: none; margin-right: 3px; }
+label { display: block; margin: 8px 0; font-size: 0.85rem; }
+input[type="range"] { width: 100%; }
+.button-row { display: flex; gap: 5px; }
+.button-row button { flex: 1; }
+.hint { color: #aebac6; font-size: 0.78rem; }
+#message { color: #aebac6; }
+#message.error { color: #ff9c9c; }
+
+.inclusion-grid { max-height: 260px; overflow-y: auto; border: 1px solid #405366; padding: 5px; }
+.inclusion-grid label { display: flex; gap: 5px; align-items: center; margin: 3px 0; font-size: 0.72rem; }
+.visibility-grid label { display: flex; gap: 5px; align-items: center; margin: 3px 0; font-size: 0.78rem; }
+
+/* Runtime-006 recent cases (served profile). The reconciled current-case
+   marker must be VISIBLE, not only an attribute/class (PR3 review
+   r4313043501): a sighted operator has to see which remembered case is the one
+   that is open. The label is toggled by the same reconciler that owns
+   aria-current, so it can never outlive the two facts it is derived from. */
+.recent-item { padding: 3px 0; }
+.recent-item.active {
+  border-left: 3px solid #4da3ff;
+  background: #1f2f40;
+  padding-left: 6px;
+}
+.recent-current-label {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #4da3ff;
+  color: #06121e;
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+.recent-current-label[hidden] { display: none; }
+.recent-info { margin-right: 6px; }
+.recent-badge { margin-left: 6px; color: #aebac6; font-size: 0.78rem; }
+
+dialog { background: #18232e; color: #e8eef5; border: 1px solid #5c89ad; }

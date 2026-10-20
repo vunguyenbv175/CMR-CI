@@ -1,0 +1,73 @@
+name: linux-focused-verification
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-focused-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  focused-tests:
+    name: Python 3.12 / ubuntu-latest focused workstation tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout snapshot (no persisted credentials)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: "22"
+
+      - name: Install pinned CI dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+
+      - name: Verify byte manifest BEFORE pytest
+        run: python ci/verify_manifest.py
+
+      - name: Run focused workstation tests
+        id: pytest
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          python -m pytest -q \
+            tests/workstation/test_case_workspace_recent_api.py \
+            tests/workstation/test_case_workspace_open.py \
+            tests/workstation/test_case_workspace_switch.py \
+            tests/workstation/test_case_workspace_switch_study.py \
+            tests/workstation/test_server_api.py \
+            tests/workstation/test_static_assets.py \
+            tests/workstation/test_series_selection_api.py \
+            tests/workstation/test_frame_pixels_endpoint.py \
+            --junitxml=artifacts/junit.xml 2>&1 | tee artifacts/pytest.log
+
+      - name: Upload JUnit and pytest log (success or failure)
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: linux-focused-junit
+          path: |
+            artifacts/junit.xml
+            artifacts/pytest.log
+          if-no-files-found: error
+
+      - name: Preserve the pytest exit status
+        if: steps.pytest.outcome != 'success'
+        run: exit 1

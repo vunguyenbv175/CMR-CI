@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMR Studio Workstation</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="workstation">
+    <aside class="series-browser" aria-label="Series browser">
+      <h1>CMR Studio</h1>
+      <h2>Series</h2>
+      <ul id="series-list"></ul>
+    </aside>
+    <section class="viewport" aria-label="Frozen-rendered cine viewport">
+      <div class="canvas-wrap" id="canvas-wrap">
+        <canvas id="cine-canvas" width="800" height="500"></canvas>
+      </div>
+      <p id="message" role="status">Loading synthetic study…</p>
+    </section>
+    <aside class="controls" aria-label="Interactive controls">
+      <section>
+        <h2>Playback</h2>
+        <button id="play" type="button">Play</button>
+        <label>FPS <input id="fps" type="range" min="1" max="60" value="10"></label>
+        <output id="fps-value" for="fps">10</output>
+        <div class="button-row">
+          <button id="previous-frame" type="button">Frame −</button>
+          <button id="next-frame" type="button">Frame +</button>
+        </div>
+        <div class="button-row">
+          <button id="previous-slice" type="button">Slice −</button>
+          <button id="next-slice" type="button">Slice +</button>
+        </div>
+      </section>
+      <section>
+        <h2>ED / ES intent</h2>
+        <p class="hint">Current frame: <span id="current-position">—</span></p>
+        <button id="mark-ed" type="button">Mark ED</button>
+        <button id="mark-es" type="button">Mark ES</button>
+      </section>
+      <section>
+        <h2>Inclusion</h2>
+        <p class="hint">Whole-slice decisions. Changes stay local until applied.</p>
+        <div id="inclusion-grid" class="inclusion-grid"></div>
+        <button id="apply-inclusion" type="button">Apply Inclusion &amp; Refresh Analysis</button>
+        <button id="reset-inclusion" type="button">Reset All Included</button>
+      </section>
+      <section>
+        <h2>Reference context</h2>
+        <label>Reference sex
+          <select id="reference-sex">
+            <option value="">Not supplied</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+          </select>
+        </label>
+      </section>
+      <section>
+        <h2>Window / Level (display only)</h2>
+        <p class="hint">Raw decoded pixel values (no rescale/VOI LUT). Display only — never
+          persisted and never part of any measurement, QC or approval.</p>
+        <label>Center <input id="wl-center" type="number" step="any" placeholder="auto"></label>
+        <label>Width <input id="wl-width" type="number" step="any" placeholder="auto"></label>
+        <p class="hint">Applied window: <span id="wl-readout">auto</span></p>
+        <div class="button-row">
+          <button id="wl-apply" type="button">Apply Window / Level</button>
+          <button id="wl-reset" type="button">Reset Auto</button>
+        </div>
+      </section>
+      <section>
+        <h2>Contour visibility</h2>
+        <p class="hint">Display only. Hiding a structure never deletes or edits its contour.</p>
+        <div id="visibility-grid" class="visibility-grid"></div>
+        <button id="visibility-reset" type="button">Reset All Visible</button>
+      </section>
+      <section>
+        <h2>Reports</h2>
+        <a id="report-json" download="report.json" href="#">JSON</a>
+        <a id="report-csv" download="report.csv" href="#">CSV</a>
+        <a id="report-pdf" download="report.pdf" href="#">PDF</a>
+      </section>
+      <button id="shortcuts" type="button">? Shortcuts</button>
+    </aside>
+  </main>
+  <dialog id="shortcuts-dialog">
+    <h2>Keyboard shortcuts</h2>
+    <p>Space play/pause · ←/→ frame · ↑/↓ slice · +/- speed · E ED · S ES · ? this dialog</p>
+    <button id="close-shortcuts" type="button">Close</button>
+  </dialog>
+  <script src="/static/kbmap.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

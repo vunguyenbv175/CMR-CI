@@ -1,0 +1,8 @@
+# CI-ONLY dependency declaration for the public snapshot.
+# Not an upstream source file. Versions are the exact versions used for
+# the local snapshot smoke run; install only from PyPI.
+numpy==2.5.2
+pydicom==3.0.2
+matplotlib==3.11.1
+pillow==12.3.0
+pytest==9.1.1
